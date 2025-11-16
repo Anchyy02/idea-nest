@@ -149,14 +149,22 @@
       kanban: 'funzone/kanban.html'
     };
     var src = map[view];
-    if(!src){
-      container.innerHTML = '<p>Odaberite jednu opciju iz menija Student Fun Zone.</p>';
-      return;
-    }
+    if(!src){ src = map['visual']; }
     var iframe = document.createElement('iframe');
     iframe.src = src;
     iframe.title = 'Student Fun Zone – ' + view;
-    iframe.style.height = '700px';
+    iframe.style.width = '100%';
+    iframe.style.border = 'none';
+    iframe.style.overflow = 'hidden';
+    // Fixed height per view - no dynamic resizing
+    var heights = {
+      'visual': '740px',
+      'whiteboard': '720px',
+      'bingo': '700px',
+      'kviz': '700px',
+      'kanban': '700px'
+    };
+    iframe.style.height = heights[view] || '700px';
     container.innerHTML = '';
     container.appendChild(iframe);
   }

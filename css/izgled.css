@@ -4,9 +4,10 @@
     --surface: #ffffff;
     --text: #1f2937;
     --muted: #6b7280;
-    --primary: #c30f10; /* brand red */
-    --primary-600: #a30d0e;
-    --primary-50: #fff1f2;
+    /* Project brand color */
+    --primary: #207cf5; /* main blue */
+    --primary-600: #1864c9; /* darker hover */
+    --primary-50: #e8f1ff;  /* subtle focus ring */
     --border: #e5e7eb;
     --shadow: 0 8px 24px rgba(16, 24, 40, 0.08);
     --radius: 14px;
@@ -163,7 +164,7 @@ th, td {
 th {
     text-align: left;
     color: #374151;
-    background: #fde7e7;
+    background: #eaf3ff;
 }
 tr:nth-child(odd) td { background: #fafafa; }
 td:nth-child(4) { text-align: right; padding-right: 10px; }
