@@ -51,6 +51,8 @@ header, article {
 
 /* Header */
 header { padding: var(--space-4) var(--space-6) var(--space-3); }
+/* Ensure dropdown can overflow header and stays above article */
+header { overflow: visible; position: relative; z-index: 30; }
 header a { text-decoration: none; }
 header img {
     display: block;
@@ -89,6 +91,28 @@ nav a:hover { background: var(--primary-600); }
 nav a:active { transform: translateY(1px); }
 nav a:focus-visible { outline: 3px solid #fff; outline-offset: 2px; }
 
+/* Dropdown (Student Fun Zone) */
+nav ul li.has-dropdown { position: relative; }
+nav ul li.has-dropdown > a::after { content: " ▾"; font-size: .8em; }
+nav ul li.has-dropdown ul {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    background: var(--primary);
+    border-radius: 10px;
+    padding: var(--space-2) 0;
+    min-width: 220px;
+    box-shadow: var(--shadow);
+    display: none;
+    z-index: 20;
+}
+/* Keep submenu open on hover, focus, or when JS toggles .open */
+nav ul li.has-dropdown:hover ul,
+nav ul li.has-dropdown:focus-within ul,
+nav ul li.has-dropdown.open ul { display: block; }
+nav ul li.has-dropdown ul li { display: block; }
+nav ul li.has-dropdown ul a { display: block; padding: 10px 14px; border-radius: 0; }
+
 /* Links */
 a, a:visited { color: var(--primary); font-weight: 600; }
 a:hover { color: var(--primary-600); }
@@ -111,6 +135,15 @@ article img {
     border-radius: 10px;
     box-shadow: var(--shadow);
 }
+
+/* Page tools (PDF / Email) */
+.page-tools { 
+    display: flex; 
+    flex-wrap: wrap; 
+    gap: var(--space-2); 
+    margin: 0 0 var(--space-5) 0; 
+}
+.page-tools button { padding: 10px 16px; }
 
 /* Tables */
 table { 
@@ -212,4 +245,42 @@ footer {
     label { width: 100%; }
     select, input[type=text], input[type=email], textarea { width: 100%; }
     input[type=checkbox] { margin-left: 0; }
+}
+
+/* Modal (email popup) */
+.modal-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.45);
+    display: none;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+}
+.modal {
+    width: min(520px, 92vw);
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    box-shadow: var(--shadow);
+    padding: var(--space-6);
+}
+.modal h3 { margin-top: 0; }
+.modal .row { margin-bottom: var(--space-4); }
+.modal label { width: 100%; margin-bottom: var(--space-2); }
+.modal input[type=email], .modal input[type=text] { width: 100%; }
+.modal .actions { display: flex; gap: var(--space-2); justify-content: flex-end; }
+
+/* Print: only article content */
+@media print {
+    body { background: #fff; }
+    header, nav, footer { display: none !important; }
+    article { 
+        box-shadow: none; 
+        border: none; 
+        margin: 0; 
+        width: auto; 
+        padding: 0; 
+    }
+    .page-tools, .modal-overlay { display: none !important; }
 }

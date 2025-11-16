@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="bs">
+<head>
+  <meta charset="utf-8" />
+  <title>Visual Board</title>
+  <style>
+    body { margin: 0; font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif; }
+    .canvas { display:grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap:12px; padding:12px; }
+    .note { background:#fff; border:1px solid #e5e7eb; border-radius:10px; padding:10px; box-shadow: 0 6px 16px rgba(16,24,40,.06); cursor:grab; }
+    .note:active { cursor:grabbing; }
+    .toolbar { display:flex; gap:8px; padding:10px; border-bottom:1px solid #e5e7eb; position:sticky; top:0; background:#fff; z-index:2; }
+  </style>
+</head>
+<body>
+  <div class="toolbar">
+    <button id="add">Dodaj bilješku</button>
+  </div>
+  <div class="canvas" id="canvas"></div>
+  <script>
+    const canvas = document.getElementById('canvas');
+    const add = document.getElementById('add');
+    let count = 1;
+    function createNote(text){
+      const d = document.createElement('div');
+      d.className = 'note';
+      d.draggable = true;
+      d.innerHTML = '<strong>Bilješka</strong><br><div contenteditable="true">'+(text||('Novi sadržaj '+count++))+'</div>';
+      d.addEventListener('dragstart', e=>{ e.dataTransfer.setData('text/plain', ''); d.classList.add('dragging'); });
+      d.addEventListener('dragend', ()=> d.classList.remove('dragging'));
+      return d;
+    }
+    add.onclick = ()=> canvas.appendChild(createNote());
+
+    // Simple reordering
+    canvas.addEventListener('dragover', e=>{
+      e.preventDefault();
+      const dragging = canvas.querySelector('.dragging');
+      const after = Array.from(canvas.querySelectorAll('.note:not(.dragging)')).find(n=> e.clientY <= n.getBoundingClientRect().top + n.offsetHeight/2);
+      if(!dragging) return;
+      if(after) canvas.insertBefore(dragging, after); else canvas.appendChild(dragging);
+    });
+
+    // Seed notes
+    ['Plan', 'Ideja', 'Zadatak'].forEach(t=> canvas.appendChild(createNote(t)));
+  </script>
+</body>
+</html>
